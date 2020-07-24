@@ -1,4 +1,13 @@
 version: 2 # use CircleCI 2.0
+
+references:
+  postgres: &postgres
+    image: circleci/postgres:9.6-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: estate_account_test
+      POSTGRES_PASSWORD: ""
+      
 jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/api-pen # directory where steps will run
