@@ -1,6 +1,13 @@
 version: 2 # use CircleCI 2.0
 
 references:
+  default_docker_node_executor: &default_docker_node_executor
+    image: circleci/node:10.16.0
+    environment:
+      PGHOST: 127.0.0.1
+      PGUSER: postgres
+      PGPASSWORD: ""
+      NODE_ENV: test
   postgres: &postgres
     image: circleci/postgres:9.6-alpine
     environment:
@@ -12,7 +19,7 @@ jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/estate_account # directory where steps will run
     docker: # run the steps with Docker
-      - image: circleci/node:carbon # ...with this image as the primary container; this is where all `steps` will run
+      - *default_docker_node_executor
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
       - run:
