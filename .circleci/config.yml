@@ -1,7 +1,7 @@
 version: 3
 jobs:
   build:
-    working_directory: ~/mern-starter
+    working_directory: ~/estate-account
     # The primary container is an instance of the first list image listed. Your build commands run in this container.
     docker:
       - image: circleci/node:10.16.0
@@ -27,7 +27,11 @@ jobs:
   test:
     docker:
       - image: circleci/node:10.16.0
-      # - image: mongo:3.4.4
+      - image: circleci/postgres:9.6-alpine
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_DB: estate_account_test
+        POSTGRES_PASSWORD: ""
     steps:
       - checkout
       - run:
@@ -37,15 +41,6 @@ jobs:
       - run:
           name: Test
           command: npm test
-      # - run:
-      #     name: Generate code coverage
-      #     command: './node_modules/.bin/nyc report --reporter=text-lcov'
-      - store_artifacts:
-          path: test-results.xml
-          prefix: tests
-      - store_artifacts:
-          path: coverage
-          prefix: coverage
 
 workflows:
   version: 2
