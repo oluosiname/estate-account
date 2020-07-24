@@ -10,6 +10,9 @@ jobs:
       - node/with-cache:
           steps:
             - run: npm install
+            - run:
+              name: Database setup
+              command: npx sequelize-cli db:migrate
             - run: npm test
 workflows:
     build-and-test:
