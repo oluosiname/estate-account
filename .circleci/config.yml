@@ -15,19 +15,6 @@ jobs:
     steps:
     - checkout
     - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
-    - run:
-        name: Download nvm
-        command: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
-    - run:
-        name: Setup nvm
-        command: |
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            echo 'export NVM_DIR=$HOME/.nvm' >> $BASH_ENV
-            echo 'source $NVM_DIR/nvm.sh' >> $BASH_ENV
-    - run:
-        name: Install node
-        command: nvm install 10.16.0 && nvm alias default 10.16.0
     # Dependencies
     #   This would typically go in either a build or a build-and-test job when using workflows
     # Restore the dependency cache
@@ -55,6 +42,7 @@ jobs:
     # Test
     #   This would typically be a build job when using workflows, possibly combined with build
     # This is based on your 1.0 configuration file or project settings
+    - run: npm run test:prepare
     - run: npm run test
 
 workflows:
