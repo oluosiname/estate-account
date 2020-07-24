@@ -12,7 +12,7 @@ jobs:
             - run: npm install
             - run:
                 name: Database setup
-                command: npx sequelize-cli db:migrate
+                command: npx sequelize-cli db:create
             - run: npm test
 workflows:
     build-and-test:
