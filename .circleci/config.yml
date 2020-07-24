@@ -2,7 +2,6 @@ version: 2
 
 references:
   default_docker_ruby_executor: &default_docker_ruby_executor
-    image: circleci/ruby:2.7.0
     environment:
       BUNDLE_JOBS: 3
       BUNDLE_RETRY: 3
@@ -41,6 +40,15 @@ jobs:
     # Test
     #   This would typically be a build job when using workflows, possibly combined with build
     # This is based on your 1.0 configuration file or project settings
+  test:
+   parallelism: 3
+   docker:
+   - image: circleci/node:10.16.0
+   - *postgres
+   steps:
+   - checkout
+   - run: npm run test:prepare
+   - run: npm run test
     
 
 workflows:
