@@ -14,34 +14,7 @@ jobs:
     - image: circleci/postgres:9.6-alpine
     steps:
     - checkout
-    - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
-    - run:
-        name: Download nvm
-        command: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
-    - run:
-        name: Setup nvm
-        command: |
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            echo 'export NVM_DIR=$HOME/.nvm' >> $BASH_ENV
-            echo 'source $NVM_DIR/nvm.sh' >> $BASH_ENV
-    - run:
-        name: Install node
-        command: nvm install 10.16.3 && nvm alias default 10.16.3
-    - restore_cache:
-        keys:
-        # This branch if available
-        - v4-dep-{{ .Branch }}-
-        # Default branch if not
-        - v4-dep-master-
-        # Any branch if there are none on the default branch - this should be unnecessary if you have your default branch configured correctly
-        - v4-dep-
-    - run:
-        name: Install required npm version
-        command: |
-            npm install -g npm@6.4.1
-    # The following line was run implicitly in your 1.0 builds based on what CircleCI inferred about the structure of your project. In 2.0 you need to be explicit about which commands should be run. In some cases you can discard inferred commands if they are not relevant to your project.
-    - run: export NODE_ENV=test
+
     - run: export PATH="~/estate-account/node_modules/.bin:$PATH"
     - run: npm install
     # Save dependency cache
