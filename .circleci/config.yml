@@ -12,6 +12,7 @@ jobs:
     docker:
     - image: circleci/node:10.16.0
     steps:
+    - checkout
     - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
     - run:
         name: Download nvm
