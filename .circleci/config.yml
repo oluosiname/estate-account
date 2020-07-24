@@ -47,6 +47,10 @@ jobs:
    - *postgres
    steps:
    - checkout
+   - restore_cache:
+       key: v4-dep-{{ .Branch }}-{{ epoch }}
+       paths:
+        - ./node_modules
    - run: npm run test:prepare
    - run: npm run test
     
