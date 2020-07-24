@@ -10,7 +10,7 @@ references:
       
 jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
-    working_directory: ~/api-pen # directory where steps will run
+    working_directory: ~/estate_account # directory where steps will run
     docker: # run the steps with Docker
       - image: circleci/node:carbon # ...with this image as the primary container; this is where all `steps` will run
     steps: # a collection of executable commands
