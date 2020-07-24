@@ -1,8 +1,25 @@
 version: 2
+
+references:
+  default_docker_ruby_executor: &default_docker_ruby_executor
+    image: circleci/ruby:2.7.0
+    environment:
+      BUNDLE_JOBS: 3
+      BUNDLE_RETRY: 3
+      BUNDLE_PATH: vendor/bundle
+      PGHOST: 127.0.0.1
+      PGUSER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: estate_account_test
+      POSTGRES_PASSWORD: ""
+      PGPASSWORD: ""
+      NODE_ENV: test
+  postgres: &postgres
+    image: circleci/postgres:9.6-alpine
+      
 jobs:
   build:
     working_directory: ~/estate-account
-    parallelism: 1
     shell: /bin/bash --login
     # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
     # If any of these refer to each other, rewrite them so that they don't or see https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables .
@@ -14,8 +31,7 @@ jobs:
     - image: circleci/postgres:9.6-alpine
     steps:
     - checkout
-
-    - run: export PATH="~/estate-account/node_modules/.bin:$PATH"
+    
     - run: npm install
     # Save dependency cache
     - save_cache:
@@ -25,8 +41,17 @@ jobs:
     # Test
     #   This would typically be a build job when using workflows, possibly combined with build
     # This is based on your 1.0 configuration file or project settings
-    - run: npm run test:prepare
-    - run: npm run test
+    
+ test:
+   parallelism: 3
+   docker:
+      - image: circleci/node:10.16.0
+      - *postgres
+   steps:
+      - checkout
+      - run: npm run test:prepare
+      - run: npm run test
+  
 
 workflows:
   version: 2
