@@ -47,6 +47,7 @@ jobs:
    - *postgres
    steps:
    - checkout
+   - run: npm install
    - restore_cache:
        key: v4-dep-{{ .Branch }}-{{ epoch }}
        paths:
